@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Special Message ❤️</title>
+
+<style>
+
+body{
+margin:0;
+background:black;
+overflow:hidden;
+font-family:sans-serif;
+}
+
+/* Dark cinematic fade */
+.overlay{
+position:fixed;
+inset:0;
+background:black;
+opacity:0;
+animation:fadeIn 2s forwards;
+z-index:5;
+}
+
+@keyframes fadeIn{
+to{opacity:1;}
+}
+
+/* Suspense Text */
+.message{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+color:white;
+font-size:2rem;
+text-align:center;
+opacity:0;
+animation:textAppear 3s 2s forwards;
+z-index:10;
+}
+
+@keyframes textAppear{
+to{opacity:1;}
+}
+
+/* Spotlight Effect */
+.spotlight{
+position:absolute;
+inset:0;
+background:radial-gradient(circle at center, transparent 0%, black 70%);
+opacity:0;
+animation:spotlightReveal 3s 5s forwards;
+z-index:6;
+}
+
+@keyframes spotlightReveal{
+to{
+background:radial-gradient(circle at center, transparent 60%, black 90%);
+opacity:1;
+}
+}
+
+/* Video */
+video{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:85%;
+max-width:850px;
+border-radius:20px;
+opacity:0;
+z-index:15;
+box-shadow:0 0 40px rgba(255,255,255,0.4);
+animation:videoFade 2s 7s forwards;
+}
+
+@keyframes videoFade{
+to{opacity:1;}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="overlay"></div>
+
+<div class="spotlight"></div>
+
+<div class="message">
+❤️ Wait...  
+<br><br>
+Someone wants to tell you something special...
+</div>
+
+<video id="birthdayVideo">
+<source src="bdayVdo.mp4" type="video/mp4">
+</video>
+
+<!-- Heartbeat sound -->
+<audio id="heartbeat">
+<source src="heartBeat.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+const video = document.getElementById("birthdayVideo");
+const heartbeat = document.getElementById("heartbeat");
+
+/* Play heartbeat */
+setTimeout(()=>{
+heartbeat.play().catch(()=>{});
+},2000);
+
+/* Start video */
+setTimeout(()=>{
+heartbeat.pause();
+video.play();
+},7000);
+
+/* When video ends → open card */
+video.onended = () => {
+window.location.href = "card.html";
+};
+
+</script>
+
+</body>
+</html>

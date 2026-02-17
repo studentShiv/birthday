@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>✨ Memories</title>
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- GSAP -->
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+
+    <link rel="stylesheet" href="./css/gallery.css" />
+  </head>
+
+  <body>
+    <div class="custom-cursor" id="cursor"></div>
+
+    <!-- Center Message -->
+    <div class="header">
+      <h1>✨ Memories</h1>
+    
+    </div>
+
+    <button class="next" id="nextBtn">💌 Read a Message</button>
+
+    <script>
+      const images = [
+        "photo__/pic11.jpeg",
+        "photo__/pic1.jpg",
+        "photo__/pic2.jpg",
+        "photo__/pic3.jpg",
+        "photo__/pic4.jpg",
+        "photo__/pic5.jpg",
+        "photo__/pic13.jpeg",
+        "photo__/pic6.jpg",
+        "photo__/pic7.jpg",
+        "photo__/pic8.jpg",
+        "photo__/pic9.png",
+        "photo__/pic10.jpeg",
+        "photo__/pic12.jpeg",
+
+      ];
+
+      let lastIndex = -1;
+      let moves = 0;
+
+      const nextBtn = document.getElementById("nextBtn");
+
+      const throttle = (fn, delay) => {
+        let last = 0;
+        return (...args) => {
+          const now = Date.now();
+          if (now - last > delay) {
+            last = now;
+            fn(...args);
+          }
+        };
+      };
+
+      function getRandomImage() {
+        let index;
+        do {
+          index = Math.floor(Math.random() * images.length);
+        } while (index === lastIndex);
+        lastIndex = index;
+        return images[index];
+      }
+
+if (window.innerWidth > 768) {
+  document.addEventListener(
+    "mousemove",
+    throttle((e) => {
+      const x = e.clientX;
+      const y = e.clientY;
+
+      const div = document.createElement("div");
+      div.className = "imageDiv";
+      div.style.left = x + "px";
+      div.style.top = y + "px";
+
+      const img = document.createElement("img");
+      img.src = getRandomImage();
+      div.appendChild(img);
+      document.body.appendChild(div);
+
+      gsap.fromTo(
+        img,
+        {
+          y: "30%",
+          scale: 1.15,
+          opacity: 0,
+          rotate: gsap.utils.random(-8, 8),
+          filter: "blur(8px)",
+        },
+        {
+          y: "0%",
+          scale: 1,
+          opacity: 1,
+          filter: "blur(0px)",
+          duration: 1,
+          ease: "power3.out",
+        },
+      );
+
+      gsap.to(img, {
+        y: "-30%",
+        opacity: 0,
+        scale: 0.9,
+        filter: "blur(6px)",
+        duration: 1.5,
+        delay: 2,
+        ease: "power2.inOut",
+        onComplete: () => div.remove(),
+      });
+
+      moves++;
+      if (moves > 12) {
+        nextBtn.classList.add("show");
+      }
+    }, 250),
+  );
+} else {
+  nextBtn.classList.add("show");
+}
+
+      nextBtn.onclick = () => {
+        window.location.href = "wishes.html";
+      };
+
+      const cursor = document.getElementById("cursor");
+
+      // Move custom cursor
+      document.addEventListener("mousemove", (e) => {
+        cursor.style.left = e.clientX + "px";
+        cursor.style.top = e.clientY + "px";
+      });
+
+      // Enhance cursor when hovering the button
+      nextBtn.addEventListener("mouseenter", () => {
+        cursor.style.transform = "translate(-50%, -50%) scale(1.8)";
+        cursor.style.background = "rgba(255,154,158,0.9)";
+        cursor.style.borderColor = "rgba(255,154,158,1)";
+      });
+
+      nextBtn.addEventListener("mouseleave", () => {
+        cursor.style.transform = "translate(-50%, -50%) scale(1)";
+        cursor.style.background = "transparent";
+        cursor.style.borderColor = "rgba(255,255,255,0.9)";
+      });
+
+      if (window.innerWidth < 768) {
+        document.body.style.cursor = "auto";
+        cursor.style.display = "none";
+      }
+    </script>
+  </body>
+</html>

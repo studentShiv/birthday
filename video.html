@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Birthday Video</title>
+
+<style>
+body{
+margin:0;
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+video{
+width:90%;
+max-width:800px;
+border-radius:20px;
+}
+</style>
+</head>
+
+<body>
+
+<video id="birthdayVideo" autoplay>
+  <source src="bdayVdo.mp4" type="video/mp4">
+</video>
+
+<script>
+
+const video = document.getElementById("birthdayVideo");
+
+/* When video ends → open card */
+video.onended = () => {
+  window.location.href = "card.html";
+};
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>💖 Celebration</title>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Fredoka", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ===== Floating Items ===== */
+    .float {
+      position: absolute;
+      bottom: -60px;
+      font-size: 26px;
+      opacity: 0;
+      animation: floatUp linear infinite;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(0.8);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.8;
+      }
+      90% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-120vh) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    /* ===== Center Text ===== */
+    .center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 5;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .center.show {
+      opacity: 1;
+    }
+
+    .center h1 {
+      font-size: 3.2rem;
+      text-shadow: 
+        0 10px 30px rgba(0,0,0,0.5),
+        0 0 40px rgba(255,255,255,0.6);
+      animation: glow 3s ease-in-out infinite;
+    }
+
+    .center p {
+      margin-top: 10px;
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    @keyframes glow {
+      0%,100% {
+        text-shadow:
+          0 10px 30px rgba(0,0,0,0.5),
+          0 0 25px rgba(255,255,255,0.6);
+      }
+      50% {
+        text-shadow:
+          0 10px 40px rgba(0,0,0,0.7),
+          0 0 45px rgba(255,255,255,0.9);
+      }
+    }
+
+    /* ===== Scrolling Message ===== */
+    .scrolling-message-container {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      overflow: hidden;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .scrolling-message {
+      position: absolute;
+      bottom: 0;
+      max-width: 800px;
+      padding: 40px;
+      text-align: center;
+      font-size: 1.3rem;
+      line-height: 1.8;
+      color: #fff;
+      text-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      transform: translateY(100%);
+      animation: scrollUp 70s linear forwards;
+    }
+
+    @keyframes scrollUp {
+      0% {
+        transform: translateY(100%);
+      }
+      100% {
+        transform: translateY(-100vh);
+      }
+    }
+
+    /* ===== Full Message Display ===== */
+    .full-message-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1.5s ease;
+      z-index: 200;
+    }
+
+    .full-message-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .full-message {
+      max-width: 700px;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 50px;
+      background: linear-gradient(135deg, rgba(255, 154, 158, 0.3), rgba(254, 207, 239, 0.3));
+      border-radius: 30px;
+      text-align: center;
+      font-size: 1.2rem;
+      line-height: 1.9;
+      color: #fff;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+      border: 2px solid rgba(255,255,255,0.2);
+      transform: scale(0.9);
+      transition: transform 1.5s ease;
+    }
+
+    .full-message-overlay.show .full-message {
+      transform: scale(1);
+    }
+
+    .full-message h2 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      text-shadow: 0 0 30px rgba(255,255,255,0.8);
+    }
+
+    .full-message p {
+      margin-bottom: 20px;
+    }
+
+    .close-btn {
+      margin-top: 30px;
+      padding: 12px 35px;
+      background: linear-gradient(135deg, #ff9a9e, #fecfef);
+      border: none;
+      border-radius: 30px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(255,154,158,0.5);
+      transition: all 0.3s ease;
+      pointer-events: all;
+    }
+
+    .close-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(255,154,158,0.7);
+    }
+
+    /* ===== Reduce Motion ===== */
+    @media (prefers-reduced-motion: reduce) {
+      body {
+        animation: none;
+      }
+      .float {
+        animation: none;
+        display: none;
+      }
+      .scrolling-message {
+        animation: none;
+      }
+    }
+
+    /* ===== Mobile ===== */
+    @media (max-width: 768px) {
+      .center h1 {
+        font-size: 2.4rem;
+      }
+      .center p {
+        font-size: 1rem;
+      }
+      .scrolling-message {
+        font-size: 1.1rem;
+        padding: 30px 20px;
+      }
+      .full-message {
+        padding: 35px 25px;
+        font-size: 1rem;
+        max-width: 90%;
+      }
+      .full-message h2 {
+        font-size: 2rem;
+      }
+    }
+
+    /* Custom Scrollbar */
+    .full-message::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .full-message::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+    }
+
+    .full-message::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.3);
+      border-radius: 10px;
+    }
+
+    .full-message::-webkit-scrollbar-thumb:hover {
+      background: rgba(255,255,255,0.5);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="center" id="centerText">
+    <h1>🎂 Happy Birthday</h1>
+    <p>May your life always float with love & joy 💖</p>
+  </div>
+
+  <!-- Scrolling Message -->
+  <div class="scrolling-message-container" id="scrollContainer">
+    <div class="scrolling-message" id="scrollMessage">
+      Happy Birthday, Kritika 🎂✨<br><br>
+      On this beautiful day, I just want you to know how incredibly precious you are. 💖 You are not just a year older today but, you are a year more brave, more kind, more amazing.(<b>But still shorter than me 😌</b>)<br><br>
+
+      I hope this year wraps you in happiness, surprises you with unforgettable moments, and fills your heart with the same warmth you give to everyone around you. May every dream you ask at 11:11 😂😂 come true. 🌟<br><br>
+      You deserve love that feels endless, joy that feels magical, and a life that feels like a dream.<br><br>
+      Stay exactly the way you are..... because you are absolutely perfect in your own special way. 💕<br><br>
+      Happy Birthday once again… Today is your day,.... you are one of the best person I have ever met in my life 🎉💝<br><br>
+      I remember, two years ago, I had no idea that we would become friends like this , where you would tolerate all my nonsense. 😅<br><br>
+      I had no idea that I would be able to irritate you all day, and sometimes in the evening and at night too.
+      And all you could say was, <b>"Chup raho", "Muh tod denge", "Maar denge", "Dimag nahi hai?"</b> 😂
+
+      Two years ago, I was afraid to even text you on WhatsApp, and today I have so much guts that I call you just to irritate you 🤭🤭 (<b>SORRY 😅😅</b>)<br><br>
+
+        That’s all from my side,<br>
+        One more thing — I said this last year, I’m saying it this year, and I’ll say it in the future too…  
+        Make sure to say thanks to Uncle and Aunty from my side, because I got a unique piece in my life as my <b>BAKLOL DOST</b> 😂❤️<br><br>
+
+        Aise hi aage badhte raho, padhte-likhte raho, khub paisa kamao…  
+        aur thoda mujhe bhi de dena 😌💸
+
+      SUKRIYA<br>
+      <b>Mere Charno me aapka koti koti pranam</b>
+      <br><br>
+      At last <b>HAPPY BIRTHDAY YAAR</b>, hamesh khush rhao muskurate raho like this emoji 😁😁😁(itna hi daat nikal kr )
+
+
+      
+      
+    </div>
+  </div>
+
+  <!-- Full Message Overlay -->
+  <div class="full-message-overlay" id="fullMessageOverlay">
+    <div class="full-message">
+  <h2>💖 Happy Birthday, Kritika 🎂✨</h2>
+
+  <p>
+    Happy Birthday, Kritika 🎂✨  
+    On this beautiful day, I just want you to know how incredibly precious you are. 💖  
+    You are not just a year older today — you are a year more brave, more kind, more amazing.  
+    (<b>But still shorter than me 😌</b>)
+  </p>
+
+  <p>
+    I hope this year wraps you in happiness, surprises you with unforgettable moments,  
+    and fills your heart with the same warmth you give to everyone around you.  
+    May every dream you ask at 11:11 😂😂 come true. 🌟
+  </p>
+
+  <p>
+    You deserve love that feels endless, joy that feels magical,  
+    and a life that feels like a dream.  
+    Stay exactly the way you are… because you are absolutely perfect in your own special way. 💕
+  </p>
+
+  <p>
+    Happy Birthday once again…  
+    Today is your day… and you are one of the best person I have ever met in my life. 🎉💝
+  </p>
+
+  <p>
+    I remember, two years ago, I had no idea that we would become friends like this ,  
+    where you would tolerate all my nonsense. 😅
+  </p>
+
+  <p>
+    I had no idea that I would be able to irritate you all day,  
+    and sometimes in the evening and at night too 😁😁😁.
+    And all you could say was,  
+    <b>"Chup raho", "Muh tod denge", "Maar denge", "Dimag nahi hai?"</b> 😂
+  </p>
+
+  <p>
+    Two years ago, I was afraid to even text you on WhatsApp,  
+    and today I have so much guts that I call you just to irritate you 🤭🤭  
+    (<b>SORRY 😅😅</b>)
+  </p>
+
+  <p>
+    That’s all from my side…  
+    One more thing , I said this last year, I’m saying it this year,  
+    and I’ll say it in the future too…
+  </p>
+
+  <p>
+    Make sure to say thanks to Uncle and Aunty from my side,  
+    because I got a unique piece in my life as my  
+    <b>BAKLOL DOST</b> 😂❤️
+  </p>
+
+  <p>
+    Aise hi aage badhte raho, padhte-likhte raho, khub paisa kamao…  
+    aur thoda mujhe bhi de dena 😌💸
+  </p>
+
+  <p>
+    SUKRIYA ❤️  
+    <br><br>
+    <b>Mere charno mein aapka koti koti pranam</b> 😌🙏
+  </p>
+
+  <p>
+    At last…  
+    <b>HAPPY BIRTHDAY YAAR</b> 🎂🎉  
+    Hamesha khush raho, muskurate raho like this emoji 😁😁😁  
+    (itna hi daant nikal kar 😌)
+  </p>
+
+  <button class="close-btn" onclick="closeMessage()">Continue</button>
+</div>
+
+  </div>
+
+  <script>
+    const symbols = ["💖", "🎈", "🎂", "💕", "🧁"];
+    const maxItems = 40;
+
+    function createFloat() {
+      const el = document.createElement("div");
+      el.className = "float";
+      el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+
+      el.style.left = Math.random() * 100 + "%";
+      el.style.fontSize = Math.random() * 18 + 20 + "px";
+      el.style.animationDuration = Math.random() * 6 + 8 + "s";
+      el.style.animationDelay = Math.random() * 2 + "s";
+
+      document.body.appendChild(el);
+
+      setTimeout(() => el.remove(), 14000);
+    }
+
+    for (let i = 0; i < maxItems; i++) {
+      setTimeout(createFloat, i * 400);
+    }
+
+    setInterval(createFloat, 900);
+
+    // Show scrolling message immediately on page load
+    const scrollContainer = document.getElementById('scrollContainer');
+    const fullMessageOverlay = document.getElementById('fullMessageOverlay');
+    const centerText = document.getElementById('centerText');
+
+    // After scrolling animation completes (25 seconds), show full message
+    setTimeout(() => {
+      scrollContainer.style.display = 'none';
+      fullMessageOverlay.classList.add('show');
+    }, 70000);
+
+    function closeMessage() {
+      fullMessageOverlay.classList.remove('show');
+      setTimeout(() => {
+        centerText.classList.add('show');
+      }, 500);
+    }
+  </script>
+
+</body>
+</html>
